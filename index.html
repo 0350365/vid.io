@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <style>
+      @font-face {
+        font-family: manrope;
+        src: url('/Manrope/static/ManropeMedium.ttf') format('truetype');
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #9dd1f1;
+      }
+      #hello {
+        text-align: center;
+        font-family: manrope;
+        font-size: 100px;
+        color: #094972;
+        margin-top: 40px;
+      }
+      #name_wrapper {
+        font-family: manrope;
+        align-items: center;
+        display: flex;
+        flex: auto;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        /*background-color: cadetblue;*/
+        padding: 0px 40px 0px;
+        margin-top: 40px;
+      }
+      #name_wrapper div {
+        overflow: hidden;
+        margin: 10px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 20px;
+        flex: 0 1 400px;
+        background-color: #eff5fb;
+        border-radius: 6px;
+        height: 50px;
+        margin-bottom: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      #name_wrapper div:hover {
+        background-color: #82c4ed;
+        box-shadow: 0 3px rgba(5, 11, 15, 0.4);
+      }
+      #vidSelect {
+        width: 100%;
+        height: 70vh;
+      }
+      #player {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-start;
+        font-family: Manrope;
+        /*background-color: #227209;*/
+        color: #ff4733;
+        font-size: 80px;
+      }
+      video {
+        width: 1000px;
+      }
+      nav {
+        position: fixed;
+        bottom: 0;
+        background-color: #094972;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        height: 3rem;
+        transition: 0.5s;
+        overflow: hidden;
+      }
+      nav a {
+        color: azure;
+        margin: 20px;
+        font-family: Manrope;
+        text-decoration: none;
+      }
+      nav > div {
+        /*background-color: #ff4733;*/
+        width: 85%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+      }
+      /*
+      .break {
+        flex-basis: 100%;
+        height: 0;
+      }
+      */
+      #toggle {
+        color: #88b4d3;
+        font-size: 30px;
+        transition: 0.4s;
+      }
+      #settingLinks {
+        margin-left: auto;
+        margin-right: 0;
+      }
+      #toggle:hover {
+        color: cornsilk;
+      }
+    </style>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Welcome Page</title>
+    <!--
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+   -->
+  </head>
+  <body>
+    <nav id="navPlayer">
+      <div id="navLinks">
+        <a id="toggle" href="#" onclick="expand()">&#65085;</a>
+        <div id="settingLinks">
+          <a href="#">About</a>
+          <a href="#">Settings</a>
+          <a href="#">Database Info</a>
+        </div>
+      </div>
+      <section id="player"><span>Select a video</span></section>
+    </nav>
+    <h1 id="hello">Hello</h1>
+    <section id="vidSelect">
+      <div id="name_wrapper"></div>
+    </section>
+    <script>
+      var vidCreated = false;
+      // Select the player container
+      const container = document.getElementById('player');
+      function setPlayer(vidName) {
+        expand();
+
+        // Encodes any special characters that the name may have
+        const URIstr = encodeURIComponent(vidName);
+
+        // Removes the text
+        container.firstChild.innerHTML = '';
+
+        // If the video element doesn't exist, create it and set the proper source
+        if (vidCreated === false) {
+          const newVid = document.createElement('video');
+          newVid.setAttribute('src', `/videos?id=${URIstr}`);
+          newVid.controls = 'controls';
+          container.appendChild(newVid);
+          vidCreated = true;
+        }
+
+        // If clicking on different video, change stream
+        const vidPlay = container.lastChild;
+        if ('=' + vidName != vidPlay.src.match(/=.*$/)[0]) {
+          vidPlay.src = `/videos?id=${URIstr}`;
+        }
+      }
+
+      window.onload = async () => {
+        // get the names of all of the videos in that route
+        const res = await fetch('/names', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+
+        // For each name, create a button to select and play that vid.
+        // nm is the container for the video elements
+        const nm = document.getElementById('name_wrapper');
+        data.names.forEach((i) => {
+          // Create a new div for that video
+          var entry = document.createElement('div');
+
+          // Put the vid's name in the newly create div, remove the quotation marks
+          entry.appendChild(document.createTextNode(i.replace(/['"]+/g, '')));
+
+          // Append that div to nm
+          entry.setAttribute('onClick', `setPlayer(${i})`);
+          nm.appendChild(entry);
+        });
+      };
+
+      function expand() {
+        const navH = document.getElementById('navPlayer').style;
+        if (navH.height === '100%') {
+          navH.height = '3rem';
+          document.getElementById('toggle').style.transform = 'rotate(0)';
+        } else {
+          navH.height = '100%';
+          document.getElementById('toggle').style.transform = 'rotate(180deg)';
+        }
+      }
+    </script>
+  </body>
+</html>
