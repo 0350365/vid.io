@@ -1,1 +1,1 @@
-These videos are only for demonstration purposes, feel free to delete them.
+These videos are only for demonstration purposes, feel free to delete them and use your own.
