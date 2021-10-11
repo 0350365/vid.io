@@ -1,1 +1,1 @@
-These videos are only for demonstration purposes, feel free to delete them and use your own.
+This is where the videos you want to stream will be located. Feel free to delete the demo videos and use your own.
