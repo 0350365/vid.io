@@ -1,2 +1,2 @@
 # vid.io
-Local video streaming app
+Stream videos over localhost:3000
