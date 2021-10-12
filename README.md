@@ -27,3 +27,4 @@ example). Hit enter and you should be connected.
 - Add 'About', 'Settings', and 'Databse info' pages;
 - Light and Dark modes;
 - Add videos from url;
+- Video thumbnails;
