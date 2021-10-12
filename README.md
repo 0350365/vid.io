@@ -1,6 +1,6 @@
 # vid.io
 Stream videos over localhost:3000.
-# How-to:
+# How-to (Windows):
 1. Install [Node.js](https://nodejs.org/en/) if you don't already have it;
 2. Download the zip of the main branch;
 3. Unzip;
