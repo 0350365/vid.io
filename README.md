@@ -20,6 +20,7 @@ example). Hit enter and you should be connected.
 # Known bugs:
 - Certain audio codecs may be unsupported by your browser. You can still watch the video, but it'll be muted.
 - Any file (including non-video files) in the `streamables` folder will get picked up and shown on the webpage. 
+- The 'About', 'Settings', and 'Database info' links don't do anything (yet!)
 
 # Planned future updates:
 - Video quality selection;
